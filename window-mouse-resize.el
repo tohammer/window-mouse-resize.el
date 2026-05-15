@@ -5,6 +5,7 @@
 ;; Version: 0.1
 ;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: convenience, mouse, windows
+;; URL: https://github.com/tohammer/window-mouse-resize.el
 ;; SPDX-License-Identifier: MIT
 
 ;;; Commentary:
@@ -26,8 +27,9 @@
 ;;   (window-mouse-resize-mode 1)
 ;;
 ;; Customization:
-;;   `window-mouse-resize-scale'     - scale factor (default 1.0)
-;;   `window-mouse-resize-threshold' - diagonal suppression threshold
+;;   `window-mouse-resize-scale'        - scale factor (default 1.0)
+;;   `window-mouse-resize-threshold'    - diagonal suppression threshold
+;;   `window-mouse-resize-mode-map'     - keymap; rebind to change trigger keys
 
 ;;; Code:
 
@@ -85,7 +87,7 @@ Axes below `window-mouse-resize-threshold' of the dominant axis are ignored."
             (when (window-in-direction 'below window t)
               (adjust-window-trailing-edge window sdy nil t))))))))
 
-(defun window-mouse-resize--start (start-event)
+(defun window-mouse-resize-start (start-event)
   "Start resizing the window under mouse from START-EVENT."
   (interactive "e")
   (let* ((start-posn (event-start start-event))
@@ -136,12 +138,16 @@ Axes below `window-mouse-resize-threshold' of the dominant axis are ignored."
 
 ;;; Minor mode
 
-(defvar window-mouse-resize-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map [C-S-down-mouse-1] #'window-mouse-resize--start)
-    (define-key map [S-s-down-mouse-1] #'window-mouse-resize--start)
-    map)
-  "Keymap for `window-mouse-resize-mode'.")
+(defvar window-mouse-resize-mode-map (make-sparse-keymap)
+  "Keymap for `window-mouse-resize-mode'.
+Add or change bindings here to customize the trigger keys:
+
+  (define-key window-mouse-resize-mode-map [C-S-down-mouse-1] nil)
+  (define-key window-mouse-resize-mode-map [M-down-mouse-1]
+              #\\='window-mouse-resize-start)")
+
+(define-key window-mouse-resize-mode-map [C-S-down-mouse-1] #'window-mouse-resize-start)
+(define-key window-mouse-resize-mode-map [S-s-down-mouse-1] #'window-mouse-resize-start)
 
 ;;;###autoload
 (define-minor-mode window-mouse-resize-mode
@@ -152,7 +158,7 @@ left half = left edge, right half = right edge (same for vertical).
 Diagonal drags resize both axes proportionally."
   :global t
   :lighter " WMR"
-  :keymap window-mouse-resize-map)
+  :keymap window-mouse-resize-mode-map)
 
 (provide 'window-mouse-resize)
 

@@ -59,6 +59,10 @@ Default triggers are `C-S-down-mouse-1` and `S-s-down-mouse-1` (macOS Cmd+Shift)
 (define-key window-mouse-resize-mode-map [M-down-mouse-1] #'window-mouse-resize-start)
 ```
 
+## License
+
+GPL-3.0-or-later. See [LICENSE](LICENSE).
+
 ## AI Disclaimer
 
 This package was developed with the help of AI coding agents.

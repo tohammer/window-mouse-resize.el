@@ -91,6 +91,23 @@ Bind `window-mouse-resize-start` to a button-down event. The drag ends when that
 (define-key window-mouse-resize-mode-map [M-down-mouse-3] #'window-mouse-resize-start)
 ```
 
+### Mouse-only trigger
+
+The trigger doesn't need a modifier key. A spare mouse button, such as a thumb (side) button, can start a drag on its own:
+
+```elisp
+(define-key window-mouse-resize-mode-map [down-mouse-8] #'window-mouse-resize-start)
+```
+
+The event name depends on the mouse and the platform. On Linux (X11) the thumb buttons are usually `mouse-8` and `mouse-9`; other systems may number them differently. Check which event your button sends before binding it:
+
+- `M-: (list (read-event) (read-event))`, then press and release the button once. The result shows the press and the release, e.g. `((down-mouse-8 …) (mouse-8 …))`. Bind the `down-` event.
+- Or press the button, then `C-h l` (`view-lossage`) to see the recent input events.
+
+If Emacs sees nothing, the operating system or the mouse driver keeps the button for itself. On Linux, `xev` shows whether a press arrives at all (`ButtonPress … button 8`). On Windows, the side buttons reach Emacs only while `w32-pass-extra-mouse-buttons-to-system` is nil, the default.
+
+Some modes use these buttons themselves, e.g. `eww` binds `mouse-8` to "back". With the binding above, pressing the button starts a drag and its release ends it, so the mode's own action no longer runs.
+
 ## Development
 
 ```sh

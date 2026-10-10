@@ -212,13 +212,9 @@ moving windows."
 
 (defvar window-mouse-resize-mode-map (window-mouse-resize--make-mode-map)
   "Keymap for `window-mouse-resize-mode'.
-Add or change bindings here to customize the trigger keys:
-
-  (define-key window-mouse-resize-mode-map [C-S-down-mouse-1] nil)
-  (define-key window-mouse-resize-mode-map [M-down-mouse-1]
-              #\\='window-mouse-resize-start)
-
-Bind button-down events; the matching release ends the drag.")
+To change the trigger, bind `window-mouse-resize-start' to a mouse
+button-down event in this map with `define-key', and unbind the
+default.  The release of that button ends the drag.")
 
 ;;;###autoload
 (define-minor-mode window-mouse-resize-mode

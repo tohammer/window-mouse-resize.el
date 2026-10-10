@@ -10,7 +10,8 @@ compile:
 	  -f batch-byte-compile window-mouse-resize.el
 
 checkdoc:
-	$(BATCH) --eval '(checkdoc-file "window-mouse-resize.el")'
+	$(BATCH) --eval '(checkdoc-file "window-mouse-resize.el")' \
+	  --eval '(when (get-buffer "*Warnings*") (kill-emacs 1))'
 
 test:
 	$(BATCH) -l test/window-mouse-resize-test.el -f ert-run-tests-batch-and-exit

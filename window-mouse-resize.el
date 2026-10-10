@@ -27,7 +27,7 @@
 ;;; Commentary:
 
 ;; Provides `window-mouse-resize-mode', a global minor mode that lets you
-;; resize Emacs windows by holding C-S (Cmd-Shift on macOS) and dragging
+;; resize Emacs windows by holding C-S (also Cmd-Shift on macOS) and dragging
 ;; with mouse button 1 anywhere inside a window, not only on its divider.
 ;;
 ;; Where in the window the drag starts determines which edges move:
@@ -197,11 +197,18 @@ which the drag starts selects the edges that move."
 
 ;;; Minor mode
 
-(defvar window-mouse-resize-mode-map
+(defun window-mouse-resize--make-mode-map ()
+  "Return the default `window-mouse-resize-mode-map'.
+Control-Shift works on every platform.  Cmd-Shift (super) is added on
+macOS only: on Windows the Windows key is not a modifier by default,
+and Linux desktops commonly reserve Super-drag for moving windows."
   (let ((map (make-sparse-keymap)))
     (define-key map [C-S-down-mouse-1] #'window-mouse-resize-start)
-    (define-key map [S-s-down-mouse-1] #'window-mouse-resize-start)
-    map)
+    (when (eq system-type 'darwin)
+      (define-key map [S-s-down-mouse-1] #'window-mouse-resize-start))
+    map))
+
+(defvar window-mouse-resize-mode-map (window-mouse-resize--make-mode-map)
   "Keymap for `window-mouse-resize-mode'.
 Add or change bindings here to customize the trigger keys:
 

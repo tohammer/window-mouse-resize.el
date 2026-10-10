@@ -106,6 +106,28 @@ the pointer position, start a drag with a synthetic event, and call the
 bindings of the installed transient map directly. `make compile`
 byte-compiles with warnings as errors; `make checkdoc` lints docstrings.
 
+## Default bindings per platform
+
+`C-S-<down-mouse-1>` is bound everywhere. On macOS, Ctrl+left click
+reaches Emacs as an ordinary button-1 event with the control modifier
+(`EV_BUTTON` and `EV_MODIFIERS` in `nsterm.m`), so it works there too.
+
+`S-s-<down-mouse-1>` (Cmd-Shift) is bound only when `system-type` is
+`darwin` (`window-mouse-resize--make-mode-map`):
+
+- macOS: `ns-command-modifier` defaults to `super`, so Cmd-Shift-drag
+  arrives as `S-s-down-mouse-1`.
+- Windows: `w32-lwindow-modifier` and `w32-rwindow-modifier` default to
+  nil, so the Windows key is not a modifier and the binding is dead.
+- Linux: GNOME grabs Super-drag to move the window
+  (`org.gnome.desktop.wm.preferences mouse-button-modifier` is
+  `<Super>`), so Emacs never sees it. Other window managers often use
+  Super or Alt the same way.
+
+The check is done when the file is loaded, not on `window-system`, so it
+also holds for a daemon started before its first frame. Test:
+`window-mouse-resize-test-platform-bindings`.
+
 ## Mode line
 
 Versions up to 0.2 showed a ` WMR` lighter. It was removed in 0.3: a

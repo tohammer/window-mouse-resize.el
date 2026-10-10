@@ -76,7 +76,9 @@ Bindings in `window-mouse-resize-mode-map`, active while `window-mouse-resize-mo
 | Key                    | Command                     |
 |------------------------|-----------------------------|
 | `C-S-<down-mouse-1>`   | `window-mouse-resize-start` |
-| `S-s-<down-mouse-1>`   | `window-mouse-resize-start` (Cmd-Shift on macOS) |
+| `S-s-<down-mouse-1>`   | `window-mouse-resize-start` (macOS only: Cmd-Shift) |
+
+Cmd-Shift is bound only on macOS, where Emacs reports Cmd as `super`. On Windows the Windows key is not a modifier by default, and GNOME (like many Linux window managers) uses Super-drag to move windows, so the binding would never reach Emacs there.
 
 Bind `window-mouse-resize-start` to a button-down event. The drag ends when that button is released, whatever modifiers are still held.
 

@@ -248,11 +248,21 @@ of a rebound trigger ran its global binding."
       (progn
         (window-mouse-resize-mode 1)
         (should (eq (key-binding [C-S-down-mouse-1]) #'window-mouse-resize-start))
-        (should (eq (key-binding [S-s-down-mouse-1]) #'window-mouse-resize-start))
         (window-mouse-resize-mode -1)
         (should-not (eq (key-binding [C-S-down-mouse-1])
                         #'window-mouse-resize-start)))
     (window-mouse-resize-mode -1)))
+
+(ert-deftest window-mouse-resize-test-platform-bindings ()
+  "C-S is bound everywhere; Cmd-Shift (super) only on macOS."
+  (dolist (system '(gnu/linux windows-nt darwin))
+    (let* ((system-type system)
+           (map (window-mouse-resize--make-mode-map)))
+      (should (eq (lookup-key map [C-S-down-mouse-1])
+                  #'window-mouse-resize-start))
+      (should (eq (eq (lookup-key map [S-s-down-mouse-1])
+                      #'window-mouse-resize-start)
+                  (eq system 'darwin))))))
 
 (ert-deftest window-mouse-resize-test-no-lighter ()
   (should-not (cadr (assq 'window-mouse-resize-mode minor-mode-alist))))

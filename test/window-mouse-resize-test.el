@@ -243,26 +243,33 @@ of a rebound trigger ran its global binding."
 
 ;;;; Minor mode
 
+(defconst window-mouse-resize-test--trigger
+  (if (eq system-type 'darwin) [S-s-down-mouse-1] [C-S-down-mouse-1])
+  "The default trigger on the platform running the tests.")
+
 (ert-deftest window-mouse-resize-test-mode-binds-trigger ()
   (unwind-protect
       (progn
         (window-mouse-resize-mode 1)
-        (should (eq (key-binding [C-S-down-mouse-1]) #'window-mouse-resize-start))
+        (should (eq (key-binding window-mouse-resize-test--trigger)
+                    #'window-mouse-resize-start))
         (window-mouse-resize-mode -1)
-        (should-not (eq (key-binding [C-S-down-mouse-1])
+        (should-not (eq (key-binding window-mouse-resize-test--trigger)
                         #'window-mouse-resize-start)))
     (window-mouse-resize-mode -1)))
 
 (ert-deftest window-mouse-resize-test-platform-bindings ()
-  "C-S is bound everywhere; Cmd-Shift (super) only on macOS."
+  "One trigger per platform: Cmd-Shift (super) on macOS, C-S elsewhere."
   (dolist (system '(gnu/linux windows-nt darwin))
     (let* ((system-type system)
-           (map (window-mouse-resize--make-mode-map)))
-      (should (eq (lookup-key map [C-S-down-mouse-1])
-                  #'window-mouse-resize-start))
+           (map (window-mouse-resize--make-mode-map))
+           (mac (eq system 'darwin)))
+      (should (eq (eq (lookup-key map [C-S-down-mouse-1])
+                      #'window-mouse-resize-start)
+                  (not mac)))
       (should (eq (eq (lookup-key map [S-s-down-mouse-1])
                       #'window-mouse-resize-start)
-                  (eq system 'darwin))))))
+                  mac)))))
 
 (ert-deftest window-mouse-resize-test-no-lighter ()
   (should-not (cadr (assq 'window-mouse-resize-mode minor-mode-alist))))

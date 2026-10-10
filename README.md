@@ -1,6 +1,6 @@
 # window-mouse-resize
 
-Resize Emacs windows by dragging anywhere inside them, not only on the thin divider between them. Hold `C-S` (Control-Shift; on macOS also Cmd-Shift) and drag with the left mouse button. Where the drag starts picks the edges that move, so you can widen a side panel, shrink a compilation window or rebalance a split without aiming at the window border.
+Resize Emacs windows by dragging anywhere inside them, not only on the thin divider between them. Hold `C-S` (Control-Shift; Cmd-Shift on macOS) and drag with the left mouse button. Where the drag starts picks the edges that move, so you can widen a side panel, shrink a compilation window or rebalance a split without aiming at the window border.
 
 | Drag starts in | Edge moved  |
 |----------------|-------------|
@@ -18,7 +18,7 @@ A diagonal drag moves one horizontal and one vertical edge. When the drag is clo
 (window-mouse-resize-mode 1)
 ```
 
-Split the frame (`C-x 3`), then `C-S`-drag in the right half of the left window to the right: the divider follows the pointer.
+Split the frame (`C-x 3`), then `C-S`-drag (Cmd-Shift-drag on macOS) in the right half of the left window to the right: the divider follows the pointer.
 
 ## Installation
 
@@ -75,10 +75,10 @@ Bindings in `window-mouse-resize-mode-map`, active while `window-mouse-resize-mo
 
 | Key                    | Command                     |
 |------------------------|-----------------------------|
-| `C-S-<down-mouse-1>`   | `window-mouse-resize-start` |
-| `S-s-<down-mouse-1>`   | `window-mouse-resize-start` (macOS only: Cmd-Shift) |
+| `C-S-<down-mouse-1>`   | `window-mouse-resize-start` (Linux, Windows) |
+| `S-s-<down-mouse-1>`   | `window-mouse-resize-start` (macOS: Cmd-Shift) |
 
-Cmd-Shift is bound only on macOS, where Emacs reports Cmd as `super`. On Windows the Windows key is not a modifier by default, and GNOME (like many Linux window managers) uses Super-drag to move windows, so the binding would never reach Emacs there.
+Only one of the two is bound, depending on the platform. On macOS, Emacs reports Cmd as `super`, and Cmd-Shift is the natural modifier there. Elsewhere Super is not used: on Windows the Windows key is not a modifier by default, and GNOME (like many Linux window managers) uses Super-drag to move windows, so the binding would never reach Emacs.
 
 Bind `window-mouse-resize-start` to a button-down event. The drag ends when that button is released, whatever modifiers are still held.
 
@@ -86,7 +86,7 @@ Bind `window-mouse-resize-start` to a button-down event. The drag ends when that
 ;; Add another trigger
 (define-key window-mouse-resize-mode-map [M-down-mouse-1] #'window-mouse-resize-start)
 
-;; Replace the default trigger
+;; Replace the default trigger (on macOS: [S-s-down-mouse-1])
 (define-key window-mouse-resize-mode-map [C-S-down-mouse-1] nil)
 (define-key window-mouse-resize-mode-map [M-down-mouse-3] #'window-mouse-resize-start)
 ```

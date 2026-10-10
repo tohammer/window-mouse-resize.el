@@ -7,7 +7,7 @@ or ended.
 ## Overview
 
 ```
-C-S-down-mouse-1 → window-mouse-resize-start (window from the event)
+C-S-down-mouse-1 (S-s- on macOS) → window-mouse-resize-start (window from the event)
   ├─ pick edges from the start position in the window body:
   │    left half  → trailing edge of the window to the left
   │    right half → own trailing edge (only if a window is to the right)
@@ -108,12 +108,14 @@ byte-compiles with warnings as errors; `make checkdoc` lints docstrings.
 
 ## Default bindings per platform
 
-`C-S-<down-mouse-1>` is bound everywhere. On macOS, Ctrl+left click
-reaches Emacs as an ordinary button-1 event with the control modifier
-(`EV_BUTTON` and `EV_MODIFIERS` in `nsterm.m`), so it works there too.
+Exactly one trigger is bound (`window-mouse-resize--make-mode-map`):
+`S-s-<down-mouse-1>` (Cmd-Shift) when `system-type` is `darwin`,
+`C-S-<down-mouse-1>` everywhere else. Binding both on macOS was
+redundant. `C-S` would work there too: Ctrl+left click reaches Emacs
+as an ordinary button-1 event with the control modifier (`EV_BUTTON`
+and `EV_MODIFIERS` in `nsterm.m`), not as a right click.
 
-`S-s-<down-mouse-1>` (Cmd-Shift) is bound only when `system-type` is
-`darwin` (`window-mouse-resize--make-mode-map`):
+Super is used only on macOS:
 
 - macOS: `ns-command-modifier` defaults to `super`, so Cmd-Shift-drag
   arrives as `S-s-down-mouse-1`.

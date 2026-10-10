@@ -106,6 +106,12 @@ the pointer position, start a drag with a synthetic event, and call the
 bindings of the installed transient map directly. `make compile`
 byte-compiles with warnings as errors; `make checkdoc` lints docstrings.
 
+## Mode line
+
+Versions up to 0.2 showed a ` WMR` lighter. It was removed in 0.3: a
+global mode that is on all the time gains nothing from a mode-line
+indicator. Test: `window-mouse-resize-test-no-lighter`.
+
 ## Known limitations
 
 - The automated tests run headless only; drags in a graphical frame
@@ -116,8 +122,3 @@ byte-compiles with warnings as errors; `make checkdoc` lints docstrings.
   combination.
 - `track-mouse` is set globally and restored when the transient map
   exits, as `mouse-drag-line` does.
-
-## Open points
-
-- The `WMR` lighter is shown for a global mode that rarely needs to be
-  visible. Dropping it changes the mode line for existing users.

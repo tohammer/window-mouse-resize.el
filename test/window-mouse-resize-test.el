@@ -254,4 +254,7 @@ of a rebound trigger ran its global binding."
                         #'window-mouse-resize-start)))
     (window-mouse-resize-mode -1)))
 
+(ert-deftest window-mouse-resize-test-no-lighter ()
+  (should-not (cadr (assq 'window-mouse-resize-mode minor-mode-alist))))
+
 ;;; window-mouse-resize-test.el ends here

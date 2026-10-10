@@ -3,7 +3,7 @@
 ;; Author: Tobias Hammer <tohammer@users.noreply.github.com>
 ;; Maintainer: Tobias Hammer <tohammer@users.noreply.github.com>
 ;; Copyright (C) 2025 Tobias Hammer
-;; Version: 0.3
+;; Version: 0.4
 ;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: convenience, mouse, windows
 ;; URL: https://github.com/tohammer/window-mouse-resize.el

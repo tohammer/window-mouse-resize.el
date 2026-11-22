@@ -4,7 +4,7 @@
 
 Resize Emacs windows by dragging anywhere inside them, not only on the thin divider between them. Hold `C-S` (Control-Shift; Cmd-Shift on macOS) and drag with the left mouse button. Where the drag starts picks the edges that move, so you can widen a side panel, shrink a compilation window or rebalance a split without aiming at the window border.
 
-![Dragging inside windows to resize them](docs/demo.gif)
+[![Dragging inside windows to resize them (click for the full-size demo)](docs/demo-thumb.gif)](docs/demo.gif)
 
 | Drag starts in | Edge moved  |
 |----------------|-------------|
